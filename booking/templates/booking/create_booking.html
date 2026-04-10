@@ -1,14 +1,126 @@
-<h2> Create Booking </h2>
+{% extends 'base.html' %}
 
-<form method="POST">
-    {% csrf_token %} 
-    {{ form.as_p }}
-    <button type="submit">Book Room</button>
-</form>
+{% block content %}
 
-{% if form.errors %}
-    <div style="color:red;">
-        {{form.errors}}
-    </div>
-{%endif%}
-<a href="{% url 'room_list' %}">Home</a><br>
+<style>
+/* Center container */
+.booking-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.booking-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form fields */
+.booking-container form p {
+    margin-bottom: 15px;
+}
+
+.booking-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #444;
+}
+
+/* Input fields */
+.booking-container input,
+.booking-container select,
+.booking-container textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.2s;
+}
+
+/* Focus effect */
+.booking-container input:focus,
+.booking-container select:focus,
+.booking-container textarea:focus {
+    border-color: #7b5cff;
+    box-shadow: 0 0 5px rgba(123, 92, 255, 0.3);
+}
+
+/* Button */
+.book-btn {
+    width: 100%;
+    padding: 12px;
+    background: #7b5cff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.book-btn:hover {
+    background: #5a3ee0;
+}
+
+/* Error box */
+.error-box {
+    margin-top: 15px;
+    padding: 10px;
+    background: #ffe6e6;
+    color: #cc0000;
+    border-radius: 6px;
+}
+
+/* Back link */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #7b5cff;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .booking-container {
+        margin: 20px;
+        padding: 20px;
+    }
+}
+</style>
+
+<div class="booking-container">
+    <h2>Create Booking</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="book-btn">
+            Book Room
+        </button>
+    </form>
+
+    {% if form.errors %}
+        <div class="error-box">
+            {{ form.errors }}
+        </div>
+    {% endif %}
+
+    <a href="{% url 'room_list' %}" class="back-link">
+        ← Back to Rooms
+    </a>
+</div>
+
+{% endblock %}

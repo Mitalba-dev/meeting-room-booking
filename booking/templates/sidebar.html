@@ -1,0 +1,15 @@
+<div class="sidebar">
+    <h2>ReservedIT</h2>
+
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'room_list' %}">Rooms</a>        <!-- 👈 important -->
+    <a href="{% url 'booking_list' %}">Bookings</a>
+
+    <a href="#">Calendar</a>
+    <a href="#">Reports</a>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</div>

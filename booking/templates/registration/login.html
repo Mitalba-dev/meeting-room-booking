@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+
+        .left {
+            width: 50%;
+            background: url("{% static 'images/meeting.jpg' %}") no-repeat center;
+            background-size: cover;
+        }
+
+        .right {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f5e9e2;
+        }
+
+        .login-box {
+            width: 300px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #6d4c5b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5a3d4a;
+        }
+
+        .link {
+            margin-top: 10px;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+{% if form.errors %}
+    <div style="color:red;">
+        Invalid username or password
+    </div>
+{% endif %}
+
+<div class="left"></div>
+
+<div class="right">
+    <div class="login-box">
+        <h2>Welcome Back!</h2>
+        <p>Please enter your details</p>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.username.label_tag }}
+            {{ form.username }}
+
+            {{ form.password.label_tag }}
+            {{ form.password }}
+
+            <button type="submit">Login →</button>
+        </form>
+
+        <a class="link" href="{% url 'register' %}">
+            Don't have an account? Register
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

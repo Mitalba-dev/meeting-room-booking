@@ -1,0 +1,29 @@
+<div style="padding: 10px; background: #6d4c5b; color: white; display: flex; justify-content: space-between; align-items: center;">
+
+    <!-- Left: App Name -->
+    <div>
+        <b>Meeting Room App</b>
+    </div>
+
+    <!-- Right: Auth Links -->
+    <div>
+        {% if user.is_authenticated %}
+            Welcome {{ user.username }} |
+            <a href="{% url 'room_list' %}" style="color:white;">Home</a> |
+            
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="background:none; border:none; color:white; cursor:pointer;">
+                    Logout
+                </button>
+            </form>
+
+        {% else %}
+            <a href="{% url 'login' %}" style="color:white;">Login</a> |
+            <a href="{% url 'register' %}" style="color:white;">Register</a>
+        {% endif %}
+    </div>
+
+</div>
+
+<hr>

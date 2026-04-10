@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meeting Room Booking</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Layout */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background: #2f3542;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #57606f;
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Footer */
+        .site-footer {
+            background: #47525c;
+            color: white;
+            text-align: center;
+            padding: 12px;
+        }
+
+        /* Messages */
+        .message {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 160px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page-wrapper {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .sidebar a {
+                margin: 0;
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Meeting</h2>
+
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'room_list' %}">Rooms</a>
+        <a href="{% url 'booking_list' %}">Bookings</a>
+        <a href="{% url 'create_booking' %}">Create Booking</a>
+
+        <hr>
+
+        {% if user.is_authenticated %}
+            <p>👤 {{ user.username }}</p>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+        <!-- MESSAGES -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message 
+                    {% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- CONTENT -->
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <p>© 2025 Meeting Room Booking</p>
+        </footer>
+
+    </div>
+
+</div>
+
+</body>
+</html>

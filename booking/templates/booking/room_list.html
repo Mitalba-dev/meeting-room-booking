@@ -1,10 +1,97 @@
-<h2> Meeting Rooms <h2>
+{% extends 'base.html' %}
 
-<ul>
-    {% for room in rooms %}
-    <li>{{room.name}} (Capacity: {{room.capacity}})
+{% block content %}
+
+<style>
+.room-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+}
+
+.room-card {
+    flex: 1 1 250px;
+    max-width: 300px;
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Status badge */
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.available {
+    background: #d4edda;
+    color: #155724;
+}
+
+.booked {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Button */
+.book-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: #7b5cff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.book-btn:hover {
+    background: #5a3ee0;
+}
+
+/* Disabled button */
+.disabled {
+    background: #ccc;
+    pointer-events: none;
+}
+</style>
+
+<h2 style="margin-left:20px;">Rooms</h2>
+
+<div class="room-container">
+    {% for item in room_status %}
+        <div class="room-card">
+            <h3>{{ item.room.name }}</h3>
+            <p>Capacity: {{ item.room.capacity }}</p>
+
+            <!-- Status -->
+            {% if item.is_booked %}
+                <span class="status booked">Booked</span>
+            {% else %}
+                <span class="status available">Available</span>
+            {% endif %}
+
+            <!-- Button -->
+            {% if item.is_booked %}
+                <a class="book-btn disabled">Booked</a>
+            {% else %}
+                <a href="{% url 'create_booking' %}?room={{ item.room.id }}" 
+                   class="book-btn">
+                    Book Room
+                </a>
+            {% endif %}
+        </div>
     {% endfor %}
-</ul>
+</div>
 
-<a href="{% url 'create_booking' %}">create booking</a><br>
-<a href="{% url 'booking_list' %}">view booking</a><br>
+{% endblock %}

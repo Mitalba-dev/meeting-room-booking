@@ -1,17 +1,122 @@
-<h2> Bookings <h2>
+{% extends 'base.html' %}
 
-<ul>
-    {% for booking in bookings  %}
-        <li>
-            <b>{{booking.title}}</b> |
-            {{booking.room.name}} |
-            {{booking.start_time}} - {{booking.end_time}}
+{% block content %}
 
-            <a href="{% url 'delete_booking' booking.id %}">Delete</a>
+<style>
+.booking-container {
+    padding: 20px;
+}
 
-        </li>
+.booking-card {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Left content */
+.booking-info {
+    max-width: 70%;
+}
+
+.booking-info h3 {
+    margin: 0;
+    color: #333;
+}
+
+.booking-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+/* Status */
+.status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* Green = Active */
+.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* Red = Expired */
+.expired {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Delete button */
+.delete-btn {
+    text-decoration: none;
+    color: white;
+    background: #ff4d4d;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .booking-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .booking-info {
+        max-width: 100%;
+    }
+}
+</style>
+
+<div class="booking-container">
+    <h2>Bookings</h2>
+
+    {% for booking in bookings %}
+        <div class="booking-card">
+
+            <div class="booking-info">
+                <h3>{{ booking.title }}</h3>
+                <p><b>Room:</b> {{ booking.room.name }}</p>
+                <p>
+                    {{ booking.start_time }} - {{ booking.end_time }}
+                </p>
+
+                <!-- Status -->
+                {% if booking.end_time > now %}
+                    <span class="status active">Active</span>
+                {% else %}
+                    <span class="status expired">Expired</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <a href="{% url 'delete_booking' booking.id %}" class="delete-btn">
+                    Delete
+                </a>
+            </div>
+
+        </div>
+    {% empty %}
+        <p>No bookings found.</p>
     {% endfor %}
-</ul>
 
-<a href="{% url 'create_booking' %}"> New Booking</a><br>
-<a href="{% url 'room_list' %}">Home</a><br>
+    <a href="{% url 'create_booking' %}" style="display:inline-block; margin-top:20px;">
+        ➕ New Booking
+    </a>
+</div>
+
+{% endblock %}

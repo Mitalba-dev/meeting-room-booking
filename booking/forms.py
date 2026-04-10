@@ -8,7 +8,7 @@ from django import forms
 class BookingForm(forms.ModelForm):
     class Meta:
         model=Booking
-        fields  = ["room","title","user_name","start_time","end_time"]
+        fields  = ["room","title","start_time","end_time"]
         widgets = {
             "start_time":forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             "end_time":forms.DateTimeInput(attrs={'type': 'datetime-local'})
