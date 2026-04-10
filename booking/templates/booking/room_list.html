@@ -1,0 +1,10 @@
+<h2> Meeting Rooms <h2>
+
+<ul>
+    {% for room in rooms %}
+    <li>{{room.name}} (Capacity: {{room.capacity}})
+    {% endfor %}
+</ul>
+
+<a href="{% url 'create_booking' %}">create booking</a><br>
+<a href="{% url 'booking_list' %}">view booking</a><br>
