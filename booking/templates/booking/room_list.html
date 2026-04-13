@@ -82,14 +82,14 @@
             {% endif %}
 
             <!-- Button -->
-            {% if item.is_booked %}
+            {% comment %} {% if item.is_booked %}
                 <a class="book-btn disabled">Booked</a>
-            {% else %}
+            {% else %} {% endcomment %}
                 <a href="{% url 'create_booking' %}?room={{ item.room.id }}" 
                    class="book-btn">
                     Book Room
                 </a>
-            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
         </div>
     {% endfor %}
 </div>

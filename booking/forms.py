@@ -41,7 +41,7 @@ class BookingForm(forms.ModelForm):
         for booking in db_room:
             if new_start < booking.end_time and new_end > booking.start_time:
                 raise ValidationError(
-                    "room already Booked"
+                    "This room is already booked for the selected time!"
                 )
         return data
 

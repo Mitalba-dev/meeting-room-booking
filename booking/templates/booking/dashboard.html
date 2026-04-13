@@ -3,59 +3,102 @@
 {% block content %}
 
 <style>
-.container {
+/* Dashboard container */
+.dashboard {
     display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.sidebar {
-    width: 200px;
-    background: #6d4c5b;
-    color: white;
-    height: 100vh;
-    padding: 20px;
+/* Welcome */
+.dashboard h2 {
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.sidebar a {
-    display: block;
-    color: white;
-    margin: 10px 0;
-    text-decoration: none;
+/* Cards grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
 }
 
-.main {
-    flex: 1;
-    padding: 20px;
-}
-
+/* Card */
 .card {
-    background: #f5f5f5;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+/* Card title */
+.card h3 {
+    margin-bottom: 10px;
+    color: #444;
+}
+
+/* Booking item */
+.booking-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.booking-item:last-child {
+    border-bottom: none;
+}
+
+/* Status badges */
+.status {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.upcoming {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.completed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .dashboard h2 {
+        font-size: 20px;
+    }
 }
 </style>
 
-<div class="container">
+<div class="dashboard">
 
-    {% comment %} <!-- Sidebar -->
-    <div class="sidebar">
-        <h3>Dashboard</h3>
-        <a href="#">Bookings</a>
-        <a href="#">Calendar</a>
-    </div> {% endcomment %}
+    <h2>Welcome {{ user.username }} 👋</h2>
 
-    <!-- Main Content -->
-    {% comment %} {% include 'sidebar.html' %} {% endcomment %}
-
-    <div class="main">
-
-        <h2>Welcome {{ user.username }}</h2>
+    <div class="card-grid">
 
         <!-- Current -->
         <div class="card">
             <h3>Current Booking</h3>
+
             {% for b in current %}
-                <p>{{ b.title }} ({{ b.room.name }})</p>
+                <div class="booking-item">
+                    <b>{{ b.title }}</b><br>
+                    {{ b.room.name }}
+                    <span class="status active">Active</span>
+                </div>
             {% empty %}
                 <p>No current booking</p>
             {% endfor %}
@@ -63,9 +106,14 @@
 
         <!-- Upcoming -->
         <div class="card">
-            <h3>Upcoming Bookings</h3>
+            <h3>Upcoming</h3>
+
             {% for b in upcoming %}
-                <p>{{ b.title }} - {{ b.start_time }}</p>
+                <div class="booking-item">
+                    <b>{{ b.title }}</b><br>
+                    {{ b.start_time }}
+                    <span class="status upcoming">Upcoming</span>
+                </div>
             {% empty %}
                 <p>No upcoming bookings</p>
             {% endfor %}
@@ -73,15 +121,21 @@
 
         <!-- Recent -->
         <div class="card">
-            <h3>Recent Bookings</h3>
+            <h3>Recent</h3>
+
             {% for b in recent %}
-                <p>{{ b.title }} - {{ b.end_time }}</p>
+                <div class="booking-item">
+                    <b>{{ b.title }}</b><br>
+                    {{ b.end_time }}
+                    <span class="status completed">Completed</span>
+                </div>
             {% empty %}
                 <p>No recent bookings</p>
             {% endfor %}
         </div>
 
     </div>
+
 </div>
 
 {% endblock %}

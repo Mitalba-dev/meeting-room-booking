@@ -70,16 +70,38 @@ def delete_booking(request,pk):
     return redirect('booking_list')
 
 
+@login_required
+def cancel_booking(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+
+    today = timezone.now().date()
+
+    if booking.start_time.date() < today:
+        messages.error(request, "Cannot cancel past booking")
+    else:
+        booking.status = 'cancelled'
+        booking.save()
+        messages.success(request, "Booking cancelled successfully")
+
+    return redirect('booking_list')
+
+
 def register(request):
     form = UserCreationForm(request.POST or None)
 
+    for field in form.fields.values():
+        field.help_text = None
+
     if request.method == 'POST':
+        for field in form.fields.values():
+            field.help_text = None
+
         if form.is_valid():
             user = form.save()
-            messages.success(request, "Account created successfully")
+            # messages.success(request, "Account created successfully")
             return redirect('login')
-        else:
-            messages.error(request, "Something went wrong")
+        # else:
+        #     messages.error(request, "Something went wrong")
 
     return render(request, 'registration/register.html', {'form': form})
 

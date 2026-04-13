@@ -3,68 +3,205 @@
 <html>
 <head>
     <title>Register</title>
+
     <style>
         body {
             margin: 0;
-            font-family: Arial;
-            display: flex;
+            font-family: 'Segoe UI', sans-serif;
             height: 100vh;
-        }
-
-        .left {
-            width: 50%;
-            background: url("{% static 'images/meeting.jpg' %}") no-repeat center;
-            background-size: cover;
-        }
-
-        .right {
-            width: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f5e9e2;
+            background: linear-gradient(135deg, #7b5cff, #a18cd1);
         }
 
-        .box {
-            width: 300px;
+        /* Card */
+        .form-box {
+            width: 350px;
+            background: white;
+            padding: 35px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            animation: fadeIn 0.6s ease-in-out;
         }
 
-        input {
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Floating input */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
             width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 6px;
+            padding: 12px 10px;
+            border-radius: 8px;
             border: 1px solid #ccc;
+            outline: none;
+            font-size: 14px;
         }
 
+        .input-group label {
+            position: absolute;
+            top: 12px;
+            left: 10px;
+            color: #888;
+            font-size: 14px;
+            transition: 0.3s;
+            background: white;
+            padding: 0 5px;
+        }
+
+        /* Floating effect */
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: -8px;
+            font-size: 12px;
+            color: #7b5cff;
+        }
+
+        input:focus {
+            border-color: #7b5cff;
+            box-shadow: 0 0 5px rgba(123, 92, 255, 0.3);
+        }
+
+        /* Button */
         button {
             width: 100%;
-            padding: 10px;
-            background: #6d4c5b;
+            padding: 12px;
+            background: #7b5cff;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #5a3ee0;
+        }
+
+        /* Error */
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        /* Link */
+        .link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .link a {
+            color: #7b5cff;
+            text-decoration: none;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile */
+        @media (max-width: 400px) {
+            .form-box {
+                width: 90%;
+                padding: 25px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="left"></div>
+<div class="form-box">
 
-<div class="right">
-    <div class="box">
-        <h2>Create Account</h2>
+    <h2>Create Account ✨</h2>
+    <p>Register to continue</p>
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Register</button>
-        </form>
+    <form method="post">
+        {% csrf_token %}
 
-        <a href="{% url 'login' %}">Already have account? Login</a>
+        <div class="input-group">
+            <input type="text" name="username" id="username" required placeholder=" ">
+            <label>Username</label>
+        </div>
+        <div id="usernameError" class="error"></div>
+
+        <div class="input-group">
+            <input type="password" name="password1" id="password1" required placeholder=" ">
+            <label>Password</label>
+        </div>
+        <div id="passwordError" class="error"></div>
+
+        <div class="input-group">
+            <input type="password" name="password2" id="password2" required placeholder=" ">
+            <label>Confirm Password</label>
+        </div>
+        <div id="confirmError" class="error"></div>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <div class="link">
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
     </div>
+
 </div>
+
+<script>
+// Username validation
+document.getElementById("username").addEventListener("input", function() {
+    let val = this.value;
+    let error = document.getElementById("usernameError");
+
+    error.innerText = val.length < 3 ? "Username must be at least 3 characters" : "";
+});
+
+// Password validation
+document.getElementById("password1").addEventListener("input", function() {
+    let val = this.value;
+    let error = document.getElementById("passwordError");
+
+    error.innerText = val.length < 8 ? "Password must be at least 8 characters" : "";
+});
+
+// Confirm password
+document.getElementById("password2").addEventListener("input", function() {
+    let pass = document.getElementById("password1").value;
+    let val = this.value;
+    let error = document.getElementById("confirmError");
+
+    error.innerText = val !== pass ? "Passwords do not match" : "";
+});
+</script>
 
 </body>
 </html>

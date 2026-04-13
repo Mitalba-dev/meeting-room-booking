@@ -10,11 +10,16 @@ class Room(models.Model):
         return self.name
 
 class Booking(models.Model):
+    STATUS_CHOICES = [
+        ('active', 'Active'),
+        ('cancelled', 'Cancelled'),
+    ]
     room = models.ForeignKey(Room,on_delete=models.CASCADE,)
     title= models.CharField(max_length = 100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
