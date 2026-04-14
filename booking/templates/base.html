@@ -17,9 +17,9 @@
 
         /* Sidebar */
         .sidebar {
-            width: 230px;
-            background: #1d1d6345;
-            color: black;
+            width: 240px;
+            background: #1e1e2f;
+            color: white;
             padding: 20px 15px;
             display: flex;
             flex-direction: column;
@@ -27,16 +27,27 @@
         }
 
         .sidebar h2 {
-            margin-bottom: 25px;
             text-align: center;
-            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-title {
+            font-size: 12px;
+            color: #aaa;
+            margin: 10px 0 5px;
+            text-transform: uppercase;
         }
 
         .menu a {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: black;
+            color: #cfcfe8;
             padding: 10px 12px;
             margin-bottom: 8px;
             text-decoration: none;
@@ -62,27 +73,32 @@
         }
 
         .user-name {
+            margin-bottom: 10px;
             font-size: 14px;
-            margin-bottom: 8px;
-            color: #aaa;
+            color: #bbb;
         }
 
         .logout-btn {
-            display: block;
-            padding: 8px;
+            display: inline-block;
+            padding: 8px 12px;
             background: #ff5c5c;
             color: white;
             border-radius: 6px;
             text-decoration: none;
-            font-size: 13px;
         }
 
         .logout-btn:hover {
             background: #e04848;
         }
 
-        /* Main content */
+        /* Main */
         .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
             flex: 1;
             padding: 30px;
         }
@@ -94,11 +110,12 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
+        /* Footer */
         .footer {
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             color: white;
-            margin-top: 20px;
+            background: rgba(0,0,0,0.2);
         }
 
         /* Mobile */
@@ -110,18 +127,21 @@
             .sidebar {
                 width: 100%;
                 flex-direction: row;
-                justify-content: space-around;
-                align-items: center;
+                overflow-x: auto;
             }
 
             .menu {
-                display: flex;
+                flex-direction: row;
                 gap: 10px;
             }
 
             .menu a {
                 font-size: 12px;
                 padding: 8px;
+            }
+
+            .menu-title {
+                display: none;
             }
 
             .user-section {
@@ -142,21 +162,56 @@
             <h2>🏢 Meeting</h2>
 
             <div class="menu">
-                <a href="{% url 'dashboard' %}" class="{% if request.path == '/' %}active{% endif %}">
-                    📊 Dashboard
-                </a>
 
-                <a href="{% url 'room_list' %}" class="{% if 'room' in request.path %}active{% endif %}">
-                    🏠 Rooms
-                </a>
+                {% if user.is_staff %}
+                    <!-- 👨‍💼 ADMIN MENU -->
+                    <div class="menu-title">Admin Panel</div>
 
-                <a href="{% url 'booking_list' %}" class="{% if 'booking' in request.path %}active{% endif %}">
-                    📅 Bookings
-                </a>
+                    <a href="{% url 'admin_dashboard' %}"
+                       class="{% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                        📊 Dashboard
+                    </a>
 
-                <a href="{% url 'create_booking' %}">
-                    ➕ Create
-                </a>
+                    <a href="{% url 'room_manage' %}"
+                       class="{% if request.resolver_match.url_name == 'room_manage' %}active{% endif %}">
+                        🏢 Manage Rooms
+                    </a>
+
+                    <a href="{% url 'admin_booking_list' %}"
+                        class="{% if request.resolver_match.url_name == 'admin_booking_list' %}active{% endif %}">
+                        📅 View Bookings
+                    </a>
+
+                    <a href="{% url 'user_list' %}"
+                       class="{% if request.resolver_match.url_name == 'user_list' %}active{% endif %}">
+                        👥 Users
+                    </a>
+
+                {% else %}
+                    <!-- 👤 USER MENU -->
+                    <div class="menu-title">User Menu</div>
+
+                    <a href="{% url 'dashboard' %}"
+                       class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        📊 Dashboard
+                    </a>
+
+                    <a href="{% url 'room_list' %}"
+                       class="{% if request.resolver_match.url_name == 'room_list' %}active{% endif %}">
+                        🏠 Rooms
+                    </a>
+
+                    <a href="{% url 'booking_list' %}"
+                       class="{% if request.resolver_match.url_name == 'booking_list' %}active{% endif %}">
+                        📅 Bookings
+                    </a>
+
+                    <a href="{% url 'create_booking' %}"
+                       class="{% if request.resolver_match.url_name == 'create_booking' %}active{% endif %}">
+                        ➕ Create Booking
+                    </a>
+                {% endif %}
+
             </div>
         </div>
 
@@ -169,21 +224,93 @@
 
     </div>
 
-    <!-- Main -->
+    <!-- Main Content -->
     <div class="main">
 
-        <div class="card">
-            {% block content %}
-            {% endblock %}
+        <div class="content">
+            <div class="card">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
 
         <div class="footer">
-            © 2025 Meeting Room Booking
+            © 2025 Meeting Room Booking System
         </div>
 
     </div>
 
 </div>
+<!-- 🌍 GLOBAL TOAST SYSTEM -->
+<div id="global-toast"></div>
 
+<style>
+#global-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+
+    min-width: 280px;
+    text-align: center;
+
+    padding: 14px 18px;
+    border-radius: 10px;
+
+    color: white;
+    font-size: 14px;
+
+    display: none;
+    opacity: 0;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.4s ease;
+}
+</style>
+
+<script>
+function showGlobalToast(message, type="error") {
+    let toast = document.getElementById("global-toast");
+
+    toast.innerHTML = message;
+
+    // colors
+    if (type === "success") {
+        toast.style.background = "#28a745";
+    } else if (type === "warning") {
+        toast.style.background = "#ffc107";
+        toast.style.color = "#000";
+    } else {
+        toast.style.background = "#ff4d4d";
+    }
+
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.opacity = "1";
+        toast.style.top = "30px";
+    }, 50);
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.top = "0px";
+    }, 3500);
+
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 4000);
+}
+</script>
+
+{% if messages %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    {% for message in messages %}
+        showGlobalToast("{{ message|escapejs }}", "{{ message.tags }}");
+    {% endfor %}
+});
+</script>
+{% endif %}
 </body>
 </html>

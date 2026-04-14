@@ -15,8 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path,include
 from django.contrib.auth import views as auth_views
+
+from booking.views import CustomLoginView
 
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
@@ -26,19 +29,19 @@ from django.contrib.auth import views as auth_views
 #     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
 #     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
 # ]
+
+def home_redirect(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect('admin_dashboard')   
+        return redirect('dashboard')            
+    return redirect('login')                    
+
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
-    path(
-    '',
-    auth_views.LoginView.as_view(
-        template_name='registration/login.html',
-        redirect_authenticated_user=True
-    ),
-    name='login'
-),
-
+    path('', home_redirect, name='home'),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-
-    path('app/', include('booking.urls')),
+    path('admin/', admin.site.urls),
+    path('', include('booking.urls')),
 ]

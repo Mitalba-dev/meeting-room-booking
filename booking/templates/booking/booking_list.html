@@ -33,8 +33,104 @@
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-</style>
 
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.edit-btn {
+    background: #7b5cff;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.edit-btn:hover {
+    background: #5a3ee0;
+}
+
+.cancel-btn {
+    background: red;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.cancel-btn:hover {
+    background: #cc0000;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    margin: 15% auto;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.modal-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.yes-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.no-btn {
+    background: #ccc;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+</style>
+<script>
+    let cancelUrl = "";
+    
+    function confirmCancel(event, url) {
+        event.preventDefault();
+        cancelUrl = url;
+    
+        document.getElementById("confirmModal").style.display = "block";
+        return false;
+    }
+    
+    function closeModal() {
+        document.getElementById("confirmModal").style.display = "none";
+    }
+    
+    function proceedCancel() {
+        window.location.href = cancelUrl;
+    }
+    </script>
+
+    
 <div class="header">
     <h2>Bookings</h2>
 
@@ -57,15 +153,29 @@
         <br><br>
 
         {% if booking.status != 'cancelled' %}
-            <a href="{% url 'cancel_booking' booking.id %}" 
-               style="background:red; color:white; padding:6px 10px; border-radius:6px; text-decoration:none;">
-               Cancel
+        <div class="action-buttons">
+            <a href="{% url 'update_booking' booking.id %}" class="edit-btn">
+                Edit
             </a>
+        
+            <a href="{% url 'cancel_booking' booking.id %}" class="cancel-btn" onclick="return confirmCancel(event, this.href)">
+                Cancel
+            </a>
+        </div>
         {% endif %}
 
     </div>
 {% empty %}
     <p>No bookings yet.</p>
 {% endfor %}
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to cancel this booking?</p>
 
+        <div class="modal-actions">
+            <button onclick="proceedCancel()" class="yes-btn">Yes, Cancel</button>
+            <button onclick="closeModal()" class="no-btn">No</button>
+        </div>
+    </div>
+</div>
 {% endblock %}

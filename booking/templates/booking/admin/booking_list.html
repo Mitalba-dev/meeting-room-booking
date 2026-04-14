@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.booking-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* Card */
+.booking-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.detail {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Status */
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.active {
+    background: #e6ffe6;
+    color: green;
+}
+
+.past {
+    background: #ffe6e6;
+    color: red;
+}
+</style>
+
+<div class="header">
+    <h2>📅 All Bookings (Admin)</h2>
+</div>
+
+<div class="booking-container">
+
+{% for booking in bookings %}
+    <div class="booking-card">
+
+        <div class="title">
+            {{ booking.title }}
+        </div>
+
+        <div class="detail">
+            🏢 Room: <b>{{ booking.room.name }}</b>
+        </div>
+
+        <div class="detail">
+            👤 User: {{ booking.user.username }}
+        </div>
+
+        <div class="detail">
+            ⏰ {{ booking.start_time }} → {{ booking.end_time }}
+        </div>
+
+        {% if booking.end_time > now %}
+            <div class="status active">Active</div>
+        {% else %}
+            <div class="status past">Completed</div>
+        {% endif %}
+
+    </div>
+{% empty %}
+    <p>No bookings found</p>
+{% endfor %}
+
+</div>
+
+{% endblock %}

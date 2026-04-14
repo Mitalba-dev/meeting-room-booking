@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+/* Form container */
+.form-container {
+    max-width: 450px;
+    margin: auto;
+}
+
+/* Title */
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Input group */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Input */
+.input-group input {
+    width: 100%;
+    padding: 12px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+}
+
+/* Label */
+.input-group label {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    color: #888;
+    font-size: 14px;
+    transition: 0.3s;
+    background: white;
+    padding: 0 5px;
+}
+
+/* Floating effect */
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -8px;
+    font-size: 12px;
+    color: #7b5cff;
+}
+
+/* Focus */
+.input-group input:focus {
+    border-color: #7b5cff;
+    box-shadow: 0 0 5px rgba(123, 92, 255, 0.3);
+}
+
+/* Button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #7b5cff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #5a3ee0;
+}
+
+/* Back button */
+.back-link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #7b5cff;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Error */
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+}
+</style>
+
+<div class="form-container">
+
+    <h2 class="form-title">🏢 Room Form</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Room Name -->
+        <div class="input-group">
+            <input type="text" name="name" value="{{ form.name.value|default:'' }}" required placeholder=" ">
+            <label>Room Name</label>
+            {% if form.name.errors %}
+                <div class="error">{{ form.name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Capacity -->
+        <div class="input-group">
+            <input type="number" name="capacity" value="{{ form.capacity.value|default:'' }}" required placeholder=" ">
+            <label>Capacity</label>
+            {% if form.capacity.errors %}
+                <div class="error">{{ form.capacity.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn">Save Room</button>
+    </form>
+
+    <a href="{% url 'room_manage' %}" class="back-link">← Back to Rooms</a>
+
+</div>
+
+{% endblock %}

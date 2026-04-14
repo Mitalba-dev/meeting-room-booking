@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.stat-card h3 {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.stat-card p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #7b5cff;
+}
+</style>
+
+<h2>Admin Dashboard 👨‍💼</h2>
+
+<div class="stats">
+    <div class="stat-card">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Rooms</h3>
+        <p>{{ total_rooms }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Bookings</h3>
+        <p>{{ total_bookings }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Active Bookings</h3>
+        <p>{{ active_bookings }}</p>
+    </div>
+</div>
+
+{% endblock %}

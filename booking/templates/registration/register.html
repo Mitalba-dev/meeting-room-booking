@@ -1,141 +1,139 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Register</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #7b5cff, #a18cd1);
-        }
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #7b5cff, #a18cd1);
+}
 
-        /* Card */
-        .form-box {
-            width: 350px;
-            background: white;
-            padding: 35px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            animation: fadeIn 0.6s ease-in-out;
-        }
+/* Card */
+.form-box {
+    width: 360px;
+    background: white;
+    padding: 35px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+h2 {
+    text-align: center;
+    margin-bottom: 5px;
+    color: #333;
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 5px;
-            color: #333;
-        }
+.subtitle {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #777;
+    font-size: 14px;
+}
 
-        p {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #777;
-            font-size: 14px;
-        }
+/* Input */
+.input-group {
+    position: relative;
+    margin-bottom: 18px;
+}
 
-        /* Floating input */
-        .input-group {
-            position: relative;
-            margin-bottom: 20px;
-        }
+.input-group input {
+    width: 100%;
+    padding: 12px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.2s;
+}
 
-        .input-group input {
-            width: 100%;
-            padding: 12px 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            outline: none;
-            font-size: 14px;
-        }
+.input-group input:focus {
+    border-color: #7b5cff;
+    box-shadow: 0 0 5px rgba(123, 92, 255, 0.3);
+}
 
-        .input-group label {
-            position: absolute;
-            top: 12px;
-            left: 10px;
-            color: #888;
-            font-size: 14px;
-            transition: 0.3s;
-            background: white;
-            padding: 0 5px;
-        }
+.input-group label {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    color: #888;
+    transition: 0.3s;
+    background: white;
+    padding: 0 5px;
+}
 
-        /* Floating effect */
-        .input-group input:focus + label,
-        .input-group input:not(:placeholder-shown) + label {
-            top: -8px;
-            font-size: 12px;
-            color: #7b5cff;
-        }
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -8px;
+    font-size: 12px;
+    color: #7b5cff;
+}
 
-        input:focus {
-            border-color: #7b5cff;
-            box-shadow: 0 0 5px rgba(123, 92, 255, 0.3);
-        }
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #7b5cff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
 
-        /* Button */
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #7b5cff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 15px;
-            transition: 0.3s;
-        }
+button:hover {
+    background: #5a3ee0;
+}
 
-        button:hover {
-            background: #5a3ee0;
-        }
+/* Link */
+.link {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}
 
-        /* Error */
-        .error {
-            color: red;
-            font-size: 13px;
-            margin-top: 3px;
-        }
+.link a {
+    color: #7b5cff;
+    text-decoration: none;
+}
 
-        /* Link */
-        .link {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-        }
+.link a:hover {
+    text-decoration: underline;
+}
 
-        .link a {
-            color: #7b5cff;
-            text-decoration: none;
-        }
+/* 🔥 GLOBAL TOAST */
+#global-toast {
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    min-width: 260px;
+    text-align: center;
 
-        .link a:hover {
-            text-decoration: underline;
-        }
+    padding: 14px 18px;
+    border-radius: 10px;
 
-        /* Mobile */
-        @media (max-width: 400px) {
-            .form-box {
-                width: 90%;
-                padding: 25px;
-            }
-        }
-    </style>
+    color: white;
+    font-size: 14px;
+
+    display: none;
+    opacity: 0;
+
+    z-index: 9999;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+    transition: all 0.4s ease;
+}
+</style>
+
 </head>
 
 <body>
@@ -143,28 +141,25 @@
 <div class="form-box">
 
     <h2>Create Account ✨</h2>
-    <p>Register to continue</p>
+    <p class="subtitle">Register to continue</p>
 
     <form method="post">
         {% csrf_token %}
 
         <div class="input-group">
-            <input type="text" name="username" id="username" required placeholder=" ">
+            <input type="text" name="username" required placeholder=" ">
             <label>Username</label>
         </div>
-        <div id="usernameError" class="error"></div>
 
         <div class="input-group">
-            <input type="password" name="password1" id="password1" required placeholder=" ">
+            <input type="password" name="password1" required placeholder=" ">
             <label>Password</label>
         </div>
-        <div id="passwordError" class="error"></div>
 
         <div class="input-group">
-            <input type="password" name="password2" id="password2" required placeholder=" ">
+            <input type="password" name="password2" required placeholder=" ">
             <label>Confirm Password</label>
         </div>
-        <div id="confirmError" class="error"></div>
 
         <button type="submit">Register</button>
     </form>
@@ -176,32 +171,51 @@
 
 </div>
 
+<!-- 🌍 GLOBAL TOAST -->
+<div id="global-toast"></div>
+
 <script>
-// Username validation
-document.getElementById("username").addEventListener("input", function() {
-    let val = this.value;
-    let error = document.getElementById("usernameError");
+function showToast(message, type="error") {
+    let toast = document.getElementById("global-toast");
 
-    error.innerText = val.length < 3 ? "Username must be at least 3 characters" : "";
-});
+    toast.innerHTML = message;
 
-// Password validation
-document.getElementById("password1").addEventListener("input", function() {
-    let val = this.value;
-    let error = document.getElementById("passwordError");
+    if (type === "success") {
+        toast.style.background = "#28a745";
+    } else if (type === "warning") {
+        toast.style.background = "#ffc107";
+        toast.style.color = "#000";
+    } else {
+        toast.style.background = "#ff4d4d";
+    }
 
-    error.innerText = val.length < 8 ? "Password must be at least 8 characters" : "";
-});
+    toast.style.display = "block";
 
-// Confirm password
-document.getElementById("password2").addEventListener("input", function() {
-    let pass = document.getElementById("password1").value;
-    let val = this.value;
-    let error = document.getElementById("confirmError");
+    setTimeout(() => {
+        toast.style.opacity = "1";
+        toast.style.top = "20px";
+    }, 50);
 
-    error.innerText = val !== pass ? "Passwords do not match" : "";
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.top = "0px";
+    }, 3500);
+
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 4000);
+}
+</script>
+
+{% if messages %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    {% for message in messages %}
+        showToast("{{ message|escapejs }}", "{{ message.tags }}");
+    {% endfor %}
 });
 </script>
+{% endif %}
 
 </body>
 </html>

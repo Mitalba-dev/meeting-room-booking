@@ -18,31 +18,24 @@
     color: #333;
 }
 
-.booking-container form p {
+.input-group {
     margin-bottom: 15px;
 }
 
-.booking-container label {
+label {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
-    color: #444;
 }
 
-.booking-container input,
-.booking-container select,
-.booking-container textarea {
+input, select, textarea {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    outline: none;
-    transition: 0.2s;
 }
 
-.booking-container input:focus,
-.booking-container select:focus,
-.booking-container textarea:focus {
+input:focus, select:focus, textarea:focus {
     border-color: #7b5cff;
     box-shadow: 0 0 5px rgba(123, 92, 255, 0.3);
 }
@@ -50,17 +43,11 @@
 .book-btn {
     width: 100%;
     padding: 12px;
-    background: #7b5cff;
+    background: #ff9800;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 15px;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-.book-btn:hover {
-    background: #5a3ee0;
 }
 
 .back-link {
@@ -70,33 +57,29 @@
     text-decoration: none;
     color: #7b5cff;
 }
-
-.back-link:hover {
-    text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-    .booking-container {
-        margin: 20px;
-        padding: 20px;
-    }
-}
 </style>
 
 <div class="booking-container">
-    <h2>Create Booking</h2>
+    <h2>Update Booking</h2>
 
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <!-- 🔥 MANUAL FIELDS (NO ERROR RENDERING) -->
+        {% for field in form %}
+            <div class="input-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
 
         <button type="submit" class="book-btn">
-            Book Room
+            Update Booking
         </button>
     </form>
 
-    <a href="{% url 'room_list' %}" class="back-link">
-        ← Back to Rooms
+    <a href="{% url 'booking_list' %}" class="back-link">
+        ← Back to Bookings
     </a>
 </div>
 
