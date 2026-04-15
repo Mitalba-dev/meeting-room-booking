@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "unfold",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,14 @@ INSTALLED_APPS = [
     'booking',
     
 ]
+
+UNFOLD = {
+    "SITE_TITLE": "Meeting Admin",
+    "SITE_HEADER": "Meeting Room System",
+    "SITE_SYMBOL": "meeting_room",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -119,6 +128,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # LOGIN_REDIRECT_URL = '/app/'  
 LOGIN_REDIRECT_URL = '/app/'
